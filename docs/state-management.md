@@ -9,9 +9,6 @@
 
 ## Function documentation
 
-### get
-
-
 ### viewport
 
 ```
@@ -23,16 +20,16 @@
 xw = (xnd+1)(width/2)+x
 yw = (ynd+1)(height/2)+y
 
-Viewport width and height are silently clamped to a range that depends on the implementation. To query this range, call [get](https://hectarea1996.github.io/cl-opengl/state-management.html#get) with argument `+max-viewport-dims+`.
+Viewport width and height are silently clamped to a range that depends on the implementation. To query this range, call [get](https://hectarea1996.github.io/cl-opengl/state-management.html#get) with argument `:max-viewport-dims`.
 
 * **Parameters**:
   * **x,y**: Specify the lower left corner of the viewport rectangle, in pixels. The initial value is (0,0).
   * **width,height**: Specify the width and height of the viewport. When a GL context is first attached to a window, `width` and `height` are set to the dimensions of that window.
 
-* **Errors**: `+invalid-value+` is generated if either `width` or `height` is negative.
+* **Errors**: `:invalid-value` is generated if either `width` or `height` is negative.
 
 * **Associated gets**:
-  * [get](https://hectarea1996.github.io/cl-opengl/state-management.html#get) with argument `+viewport+`.
-  * [get](https://hectarea1996.github.io/cl-opengl/state-management.html#get) with argument `+max-viewport-dims+`.
+  * [get](https://hectarea1996.github.io/cl-opengl/state-management.html#get) with argument `:viewport`.
+  * [get](https://hectarea1996.github.io/cl-opengl/state-management.html#get) with argument `:max-viewport-dims`.
 
 * **See also**: [depth-range](https://hectarea1996.github.io/cl-opengl/state-management.html#depth-range).
