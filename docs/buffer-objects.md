@@ -4,8 +4,8 @@
 ## Functions
 
 * [bind-buffer](https://hectarea1996.github.io/cl-opengl/buffer-objects.html#bind-buffer): Bind a named buffer object.
-* [gen-buffer](https://hectarea1996.github.io/cl-opengl/buffer-objects.html#gen-buffers): Generate buffer object name.
-* [gen-buffers](https://hectarea1996.github.io/cl-opengl/buffer-objects.html#gen-buffers): Generate buffer object names.
+* [buffer-data](https://hectarea1996.github.io/cl-opengl/buffer-objects.html#buffer-data): Creates and initializes a buffer object's data store.
+* [gen-buffer, gen-buffers](https://hectarea1996.github.io/cl-opengl/buffer-objects.html#gen-buffers): Generate buffer object names.
 
 ## Function documentation
 
@@ -88,6 +88,38 @@ Once created, a named buffer object may be re-bound to any target as often as ne
   * [get](https://hectarea1996.github.io/cl-opengl/state-management.html#get) with argument `:uniform-buffer-binding`.
 
 * **See also**: [gen-buffers](https://hectarea1996.github.io/cl-opengl/buffer-objects.html#gen-buffers), [bind-buffer-base](https://hectarea1996.github.io/cl-opengl/buffer-objects.html#bind-buffer-base), [bind-buffer-range](https://hectarea1996.github.io/cl-opengl/buffer-objects.html#bind-buffer-range), [map-buffer](https://hectarea1996.github.io/cl-opengl/buffer-objects.html#map-buffer), [unmap-buffer](https://hectarea1996.github.io/cl-opengl/buffer-objects.html#unmap-buffer), [delete-buffers](https://hectarea1996.github.io/cl-opengl/buffer-objects.html#delete-buffers), [get](https://hectarea1996.github.io/cl-opengl/state-management.html#get), [is-buffer](https://hectarea1996.github.io/cl-opengl/buffer-objects.html#is-buffer).
+
+### buffer-data
+
+```
+(buffer-data target usage array &key (offset 0) (size (gl-array-byte-size array)))
+```
+
+`buffer-data` creates a new data store for a buffer object. The buffer object currently bound to *target* is used.
+
+While creating the new storage, any pre-existing data store is deleted. The new data store is created with the specified *size* in bytes and *usage*. If data is not NULL, the data store is initialized with data from this pointer. In its initial state, the new data store is not mapped, it has a NULL mapped pointer, and its mapped access is GL_READ_WRITE.
+
+usage is a hint to the GL implementation as to how a buffer object's data store will be accessed. This enables the GL implementation to make more intelligent decisions that may significantly impact buffer object performance. It does not, however, constrain the actual usage of the data store. usage can be broken down into two parts: first, the frequency of access (modification and usage), and second, the nature of that access. The frequency of access may be one of these:
+
+STREAM
+The data store contents will be modified once and used at most a few times.
+
+STATIC
+The data store contents will be modified once and used many times.
+
+DYNAMIC
+The data store contents will be modified repeatedly and used many times.
+
+The nature of access may be one of these:
+
+DRAW
+The data store contents are modified by the application, and used as the source for GL drawing and image specification commands.
+
+READ
+The data store contents are modified by reading data from the GL, and used to return that data when queried by the application.
+
+COPY
+The data store contents are modified by reading data from the GL, and used as the source for GL drawing and image specification commands.
 
 ### gen-buffers
 

@@ -1,5 +1,13 @@
 
+
 # cl-opengl reference
+
+## cl-opengl type reference
+
+* [Primitive types](https://hectarea1996.github.io/cl-opengl/primitive-types.html)
+* [gl-array](https://hectarea1996.github.io/cl-opengl/gl-array.html)
+
+## cl-opengl function reference
 
 * [Textures](https://hectarea1996.github.io/cl-opengl/textures.html)
 * [Rendering](https://hectarea1996.github.io/cl-opengl/rendering.html)
