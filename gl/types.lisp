@@ -111,9 +111,6 @@
 (defctype ubyte :unsigned-char)
 (defctype ushort :unsigned-short)
 (defctype uint :unsigned-int)
-(defctype half :unsigned-short)
-(defctype half-arb :unsigned-short)
-(defctype half-nv :unsigned-short)
 (defctype int64 :int64)
 (defctype uint64 :uint64)
 
@@ -137,6 +134,9 @@
 (defctype sizeiptr-arb ptrdiff-t)
 
 (defctype float ensure-float)
+(defctype half ensure-float)
+(defctype half-arb ensure-float)
+(defctype half-nv ensure-float)
 (defctype clampf ensure-float)
 (defctype double ensure-double)
 (defctype clampd ensure-double)
