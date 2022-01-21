@@ -10,6 +10,7 @@ Many functions accepts array data and OpenGL must know the size of the type is b
 
 * [alloc-gl-array](https://hectarea1996.github.io/cl-opengl/gl-array.html#alloc-gl-array): Allocates an array.
 * [free-gl-array](https://hectarea1996.github.io/cl-opengl/gl-array.html#free-gl-array): Frees an array.
+* [make-null-gl-array](https://hectarea1996.github.io/cl-opengl/gl-array.html#make-null-gl-array): Creates a null gl-array.
 * [gl-array-byte-size](https://hectarea1996.github.io/cl-opengl/gl-array.html#gl-array-byte-size): Returns the number of bytes of an array.
 * [glaref](https://hectarea1996.github.io/cl-opengl/gl-array.html#glaref): Retrieves an element from an array.
 
@@ -48,6 +49,22 @@ Frees an array allocated by [alloc-gl-array](https://hectarea1996.github.io/cl-o
   * **array**: The array to be freed.
 
 * **See also**: [alloc-gl-array](https://hectarea1996.github.io/cl-opengl/gl-array.html#alloc-gl-array).
+
+### make-null-gl-array
+
+```
+(make-null-gl-array type) => array
+```
+
+Returns a gl-array with a size of 0. It represents a NULL pointer.
+
+* **Parameters**:
+  * **type**: The type of the elements of the returned array.
+
+* **Returns**:
+  * **array**: The created array.
+
+* **Notes**: The created array must not be freed by [free-gl-array](https://hectarea1996.github.io/cl-opengl/gl-array.html#free-gl-array).
 
 ### gl-array-byte-size
 
