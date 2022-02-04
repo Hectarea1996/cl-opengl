@@ -68,14 +68,7 @@
 * **Note**: *data* is a gl-array.
 * **Note**: *offset* is optional.
 
-### glNamedBufferData -> named-buffer-data
 
-```
-(named-buffer-data buffer usage data &key (offset 0))
-```
-
-* **Note**: *data* is a gl-array.
-* **Note**: *offset* is optional.
 
 ### glClear -> clear
 
@@ -87,6 +80,24 @@
 
 ```
 (clear-color red green blue alpha)
+```
+
+### glCompileShader -> compile-shader
+
+```
+(compile-shader shader)
+```
+
+### glCreateProgram -> create-program
+
+```
+(create-program) => program
+```
+
+### glCreateShader -> create-shader
+
+```
+(create-shader shaderType) => shader
 ```
 
 ### glEndConditionalRender -> end-conditional-render
@@ -122,6 +133,20 @@
 
 * **Note**: *buffers* is a list.
 
+### glGetProgramInfoLog -> get-program-info-log
+
+```
+(get-program-info-log program) => infoLog
+```
+
+### glGetProgramiv -> get-program
+
+```
+(get-program program pname) => params
+```
+
+* **Note**: *params* will be a boolean if *pname* is one of these values: `:delete-status` `:link-status` `:validate-status` `:completion-status-khr`. Otherwise, an int is returned.
+
 ### glGetShaderInfoLog -> get-shader-info-log
 
 ```
@@ -135,6 +160,35 @@
 ```
 
 * **Note**: *params* is a boolean when one of the next pnames is used: `:delete-status`, `:compile-status`, `:completion-status-khr`. Otherwise, an int is returned.
+
+### glLinkProgram -> link-program
+
+```
+(link-program program)
+```
+
+### glNamedBufferData -> named-buffer-data
+
+```
+(named-buffer-data buffer usage data &key (offset 0))
+```
+
+* **Note**: *data* is a gl-array.
+* **Note**: *offset* is optional.
+
+### glShaderSource -> shader-source
+
+```
+(shader-source shader string)
+```
+
+* **Note**: *string* must be a string or a list of strings.
+
+### glUseProgram -> use-program
+
+```
+(use-program program)
+```
 
 ### glViewport -> viewport
 
