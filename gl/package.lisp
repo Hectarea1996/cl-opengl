@@ -81,6 +81,7 @@
    #:gen-buffers
    #:gen-buffer
    #:buffer-data
+   #:named-buffer-data
    #:buffer-sub-data
    #:map-buffer
    #:unmap-buffer

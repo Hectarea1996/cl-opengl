@@ -217,6 +217,11 @@ specified to denote the number of vertices that must be processed."
                                (size (gl-array-byte-size array)))
   (%gl:buffer-data target size (gl-array-pointer-offset array offset) usage))
 
+(definline named-buffer-data (buffer usage array &key (offset 0)
+                                     (size (gl-array-byte-size array)))
+  (%gl:named-buffer-data buffer size (gl-array-pointer-offset array offset) usage))
+
+
 ;;; Returns a CFFI:DEFCSTRUCT fragment for CLAUSE.
 (defun emit-gl-array-struct-clause (clause)
   (destructuring-bind (array-type &key type components &allow-other-keys)
@@ -587,10 +592,10 @@ another buffer is bound within FORMS."
             do (setf (mem-aref string-array :pointer (1- i))
                      (foreign-string-alloc line)))
         ;; set the source
-        (%gl:shader-source shader num-lines string-array (null-pointer))
+      (%gl:shader-source shader num-lines string-array (null-pointer))
         ;; free all allocated strings
-        (dotimes (i num-lines)
-          (foreign-string-free (mem-aref string-array :pointer i)))))
+      (dotimes (i num-lines)
+        (foreign-string-free (mem-aref string-array :pointer i)))))
   string-list)
 
 (import-export %gl:compile-shader
@@ -830,32 +835,32 @@ Tries to optimize case where matrices are (SIMPLE-ARRAY SINGLE-FLOAT (~s))."
                                             (float (row-major-aref matrix j)
                                                    1.0)))))
                       (,% ,@(args '(location matrix-count transpose array))))))))
-             (d (&rest defs)
-                `(progn
-                   ,@(loop for def in defs collect `(def ,@def)))))
-           (d (uniform-matrix-2fv %gl:uniform-matrix-2fv 4)
-             (uniform-matrix-2x3-fv %gl:uniform-matrix-2x3-fv 6)
-             (uniform-matrix-2x4-fv %gl:uniform-matrix-2x4-fv 8)
+           (d (&rest defs)
+              `(progn
+                 ,@(loop for def in defs collect `(def ,@def)))))
+          (d (uniform-matrix-2fv %gl:uniform-matrix-2fv 4)
+            (uniform-matrix-2x3-fv %gl:uniform-matrix-2x3-fv 6)
+            (uniform-matrix-2x4-fv %gl:uniform-matrix-2x4-fv 8)
 
-             (uniform-matrix-3x2-fv %gl:uniform-matrix-3x2-fv 6)
-             (uniform-matrix-3fv %gl:uniform-matrix-3fv 9)
-             (uniform-matrix-3x4-fv %gl:uniform-matrix-3x4-fv 12)
+            (uniform-matrix-3x2-fv %gl:uniform-matrix-3x2-fv 6)
+            (uniform-matrix-3fv %gl:uniform-matrix-3fv 9)
+            (uniform-matrix-3x4-fv %gl:uniform-matrix-3x4-fv 12)
 
-             (uniform-matrix-4x2-fv %gl:uniform-matrix-4x2-fv 8)
-             (uniform-matrix-4x3-fv %gl:uniform-matrix-4x3-fv 12)
-             (uniform-matrix-4fv %gl:uniform-matrix-4fv 16)
+            (uniform-matrix-4x2-fv %gl:uniform-matrix-4x2-fv 8)
+            (uniform-matrix-4x3-fv %gl:uniform-matrix-4x3-fv 12)
+            (uniform-matrix-4fv %gl:uniform-matrix-4fv 16)
 
-             (program-uniform-matrix-2fv %gl:program-uniform-matrix-2fv 4 t)
-             (program-uniform-matrix-2x3-fv %gl:program-uniform-matrix-2x3-fv 6 t)
-             (program-uniform-matrix-2x4-fv %gl:program-uniform-matrix-2x4-fv 8 t)
+            (program-uniform-matrix-2fv %gl:program-uniform-matrix-2fv 4 t)
+            (program-uniform-matrix-2x3-fv %gl:program-uniform-matrix-2x3-fv 6 t)
+            (program-uniform-matrix-2x4-fv %gl:program-uniform-matrix-2x4-fv 8 t)
 
-             (program-uniform-matrix-3x2-fv %gl:program-uniform-matrix-3x2-fv 6 t)
-             (program-uniform-matrix-3fv %gl:program-uniform-matrix-3fv 9 t)
-             (program-uniform-matrix-3x4-fv %gl:program-uniform-matrix-3x4-fv 12 t)
+            (program-uniform-matrix-3x2-fv %gl:program-uniform-matrix-3x2-fv 6 t)
+            (program-uniform-matrix-3fv %gl:program-uniform-matrix-3fv 9 t)
+            (program-uniform-matrix-3x4-fv %gl:program-uniform-matrix-3x4-fv 12 t)
 
-             (program-uniform-matrix-4x2-fv %gl:program-uniform-matrix-4x2-fv 8 t)
-             (program-uniform-matrix-4x3-fv %gl:program-uniform-matrix-4x3-fv 12 t)
-             (program-uniform-matrix-4fv %gl:program-uniform-matrix-4fv 16 t)))
+            (program-uniform-matrix-4x2-fv %gl:program-uniform-matrix-4x2-fv 8 t)
+            (program-uniform-matrix-4x3-fv %gl:program-uniform-matrix-4x3-fv 12 t)
+            (program-uniform-matrix-4fv %gl:program-uniform-matrix-4fv 16 t)))
 
 
 ;;; 2.15.4 Shader Execution
@@ -891,8 +896,8 @@ Tries to optimize case where matrices are (SIMPLE-ARRAY SINGLE-FLOAT (~s))."
 
 (defun program-parameteri (program pname value)
   (let ((parsed-value (ecase pname
-                 ((:program-separable :program-binary-retrievable-hint)
-                  (foreign-enum-value '%gl:enum (if value :true :false))))))
+                       ((:program-separable :program-binary-retrievable-hint)
+                        (foreign-enum-value '%gl:enum (if value :true :false))))))
     (%gl:program-parameter-i program pname parsed-value)))
 
 ;;;
@@ -907,5 +912,5 @@ Tries to optimize case where matrices are (SIMPLE-ARRAY SINGLE-FLOAT (~s))."
        (with-foreign-object (a '%gl:float len)
          (dotimes (i len)
            (setf (mem-aref a '%gl:float i) (float (elt value i))))
-       (%gl:patch-parameter-fv pname a))))
+        (%gl:patch-parameter-fv pname a))))
     (integer (%gl:patch-parameter-i pname value))))
