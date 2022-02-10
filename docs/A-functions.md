@@ -59,6 +59,12 @@
 (bind-buffer-base target index buffer)
 ```
 
+### glBindVertexArray -> bind-vertex-array
+
+```
+(bind-vertex-array array)
+```
+
 ### glBufferData -> buffer-data
 
 ```
@@ -67,8 +73,6 @@
 
 * **Note**: *data* is a gl-array.
 * **Note**: *offset* is optional.
-
-
 
 ### glClear -> clear
 
@@ -98,6 +102,50 @@
 
 ```
 (create-shader shaderType) => shader
+```
+
+### glDeleteShader -> delete-shader
+
+```
+(delete-shader shader)
+```
+
+### glDisableVertexArrayAttrib -> disable-vertex-array-attrib
+
+```
+(disable-vertex-array-attrib vaobj index)
+```
+
+### glDisableVertexAttribArray -> disable-vertex-attrib-array
+
+```
+(disable-vertex-attrib-array index)
+```
+
+### glDrawArrays -> draw-arrays
+
+```
+(draw-arrays mode first count)
+```
+
+### glDrawElements -> draw-elements
+
+```
+(draw-elements mode array &key (count (gl-array-size array)) (indices 0))
+```
+
+* **Note**: *array* must be a gl-array.
+
+### glEnableVertexArrayAttrib -> enable-vertex-array-attrib
+
+```
+(enable-vertex-array-attrib vaobj index)
+```
+
+### glEnableVertexAttribArray -> enable-vertex-attrib-array
+
+```
+(enable-vertex-attrib-array index)
 ```
 
 ### glEndConditionalRender -> end-conditional-render
@@ -132,6 +180,15 @@
 ```
 
 * **Note**: *buffers* is a list.
+
+### glGenVertexArrays -> gen-vertex-arrays | gen-vertex-array
+
+```
+(gen-vertex-arrays n) => arrays
+(gen-vertex-array) => array
+```
+
+* **Note**: *arrays* is a list.
 
 ### glGetProgramInfoLog -> get-program-info-log
 
@@ -176,6 +233,12 @@
 * **Note**: *data* is a gl-array.
 * **Note**: *offset* is optional.
 
+### glPolygonMode -> polygon-mode
+
+```
+(polygon-mode face mode)
+```
+
 ### glShaderSource -> shader-source
 
 ```
@@ -189,6 +252,32 @@
 ```
 (use-program program)
 ```
+
+### glVertexAttribIPointer -> vertex-attrib-ipointer
+
+```
+(vertex-attrib-ipointer index size type stride pointer)
+```
+
+* **Note**: pointer must be an integer.
+
+### glVertexAttribLPointer -> vertex-attrib-lpointer
+
+```
+(vertex-attrib-lpointer index size type stride pointer)
+```
+
+* **Note**: pointer must be an integer.
+
+### glVertexAttribPointer -> vertex-attrib-pointer
+
+```
+(vertex-attrib-pointer index size type normalized stride pointer)
+```
+
+* **Note**: normalized is of type boolean.
+
+* **Note**: pointer must be an integer.
 
 ### glViewport -> viewport
 

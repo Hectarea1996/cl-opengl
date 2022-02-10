@@ -62,7 +62,9 @@
 
 ;;; 2.6.2 Polygon Edges
 
-(import-export %gl:edge-flag)
+(import-export
+  %gl:edge-flag
+  %gl:polygon-mode)
 
 ;;;
 ;;; 2.7 Vertex Specification
@@ -100,13 +102,15 @@
 ;;;
 
 (import-export %gl:array-element
-               %gl:enable-client-state
-               %gl:disable-client-state
-               %gl:client-active-texture
-               %gl:enable-vertex-attrib-array
-               %gl:disable-vertex-attrib-array
-               %gl:draw-arrays
-               %gl:draw-arrays-instanced)
+  %gl:enable-client-state
+  %gl:disable-client-state
+  %gl:client-active-texture
+  %gl:enable-vertex-attrib-array
+  %gl:disable-vertex-attrib-array
+  %gl:enable-vertex-array-attrib
+  %gl:disable-vertex-array-attrib
+  %gl:draw-arrays
+  %gl:draw-arrays-instanced)
 
 (defstruct (gl-array (:copier nil))
   "Pointer to C array with size and type information attached."
@@ -174,8 +178,10 @@ specified to denote the number of vertices that must be processed."
                      (gl-array-pointer-offset array offset)
                      primcount))
 
-(import-export %gl:vertex-attrib-pointer
-               %gl:vertex-attrib-ipointer)
+(import-export
+  %gl:vertex-attrib-pointer
+  %gl:vertex-attrib-ipointer
+  %gl:vertex-attrib-lpointer)
 
 ;;;
 ;;; 2.9 Buffer Objects
