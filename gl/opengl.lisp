@@ -112,6 +112,7 @@
   %gl:draw-arrays
   %gl:draw-arrays-instanced)
 
+; gl-array
 (defstruct (gl-array (:copier nil))
   "Pointer to C array with size and type information attached."
   (pointer (null-pointer))
@@ -121,6 +122,11 @@
 (defstruct (gl-vertex-array (:copier nil) (:include gl-array))
   "Like GL-ARRAY, but with an aditional vertex array binder."
   (binder #'identity :type function))
+
+(defun gl-vector (type &rest args)
+  (make-gl-array :pointer (foreign-alloc type :initial-contents args)
+                 :size (length args) :type type))
+
 
 (defun alloc-gl-array (type count)
   (if (get type 'vertex-array-binder)
@@ -147,6 +153,31 @@ allocating new memory."
 (defun make-null-gl-array (type)
   "Returns a GL-ARRAY with a size of 0, a null pointer and of type TYPE."
   (make-gl-array-from-pointer (null-pointer) type 0))
+
+(declaim (inline gl-aref))
+(defun gl-aref (array index &optional (component nil c-p))
+  "Returns the INDEX-th component of ARRAY. If COMPONENT is
+  supplied and ARRAY is of a compound type the component named
+  COMPONENT is returned."
+  (if c-p
+    (foreign-slot-value (mem-aref (gl-array-pointer array)
+                                  (gl-array-type array)
+                                  index)
+                        (gl-array-type array)
+                        component)
+    (mem-aref (gl-array-pointer array) (gl-array-type array) index)))
+ (declaim (inline (setf gl-aref)))
+(defun (setf gl-aref) (value array index &optional (component nil c-p))
+  "Sets the place (GL-AREF ARRAY INDEX [COMPONENT]) to VALUE."
+  (if c-p
+    (setf (foreign-slot-value (mem-aref (gl-array-pointer array)
+                                        (gl-array-type array)
+                                        index)
+                              (gl-array-type array)
+                              component)
+          value)
+    (setf (mem-aref (gl-array-pointer array) (gl-array-type array) index)
+          value)))
 
 ;;; Returns a pointer to the OFFSET-th element in ARRAY.  I think this
 ;;; is different from mem-aref for simple types.
@@ -331,33 +362,7 @@ outside WITH-GL-ARRAY."
          (declare (dynamic-extent ,var))
          ,@forms))))
 
-;;; TODO: find a better name. I keep reading this as
-;;; glare-f. [2007-03-14 LO]
-(declaim (inline glaref))
-(defun glaref (array index &optional (component nil c-p))
-  "Returns the INDEX-th component of ARRAY. If COMPONENT is
-supplied and ARRAY is of a compound type the component named
-COMPONENT is returned."
-  (if c-p
-      (foreign-slot-value (mem-aref (gl-array-pointer array)
-                                    (gl-array-type array)
-                                    index)
-                          (gl-array-type array)
-                          component)
-      (mem-aref (gl-array-pointer array) (gl-array-type array) index)))
 
-(declaim (inline (setf glaref)))
-(defun (setf glaref) (value array index &optional (component nil c-p))
-  "Sets the place (GLAREF ARRAY INDEX [COMPONENT]) to VALUE."
-  (if c-p
-      (setf (foreign-slot-value (mem-aref (gl-array-pointer array)
-                                          (gl-array-type array)
-                                          index)
-                                (gl-array-type array)
-                                component)
-            value)
-      (setf (mem-aref (gl-array-pointer array) (gl-array-type array) index)
-            value)))
 
 (declaim (inline map-buffer-to-gl-array))
 (defun map-buffer-to-gl-array (target access type)

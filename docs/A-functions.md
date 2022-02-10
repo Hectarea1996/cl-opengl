@@ -259,7 +259,7 @@
 (vertex-attrib-ipointer index size type stride pointer)
 ```
 
-* **Note**: pointer must be an integer.
+* **Note**: *pointer* must be an integer.
 
 ### glVertexAttribLPointer -> vertex-attrib-lpointer
 
@@ -267,7 +267,7 @@
 (vertex-attrib-lpointer index size type stride pointer)
 ```
 
-* **Note**: pointer must be an integer.
+* **Note**: *pointer* must be an integer.
 
 ### glVertexAttribPointer -> vertex-attrib-pointer
 
@@ -275,9 +275,9 @@
 (vertex-attrib-pointer index size type normalized stride pointer)
 ```
 
-* **Note**: normalized is of type boolean.
+* **Note**: *normalized* is of type boolean.
 
-* **Note**: pointer must be an integer.
+* **Note**: *pointer* must be an integer.
 
 ### glViewport -> viewport
 
