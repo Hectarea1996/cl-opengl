@@ -56,6 +56,7 @@
      (:file "funcs-gles2")
      ;; Lispifications.
      (:file "package")
+     (:file "array")
      (:file "util")
      (:file "opengl")
      (:file "rasterization")
