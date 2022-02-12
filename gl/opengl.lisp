@@ -276,16 +276,6 @@ type. The following parameters are supported:
   (funcall (gl-vertex-array-binder array)
            (gl-array-pointer-offset array offset)))
 
-(defmacro with-gl-array ((var type &key count) &body forms)
-  "Allocates a fresh GL-ARRAY of type TYPE and COUNT elements.
-The array will be bound to VAR and is freed when execution moves
-outside WITH-GL-ARRAY."
-  (with-unique-names (ptr)
-    `(with-foreign-object (,ptr ,type ,count)
-       (let ((,var (make-gl-array-from-pointer ,ptr ,type ,count)))
-         (declare (dynamic-extent ,var))
-         ,@forms))))
-
 
 
 (declaim (inline map-buffer-to-gl-array))

@@ -9,15 +9,20 @@
   (size 0 :type unsigned-byte)
   (type nil :type symbol))
 
+
+(defmacro alloc-gl-array (type &rest foreign-alloc-args)
+  "Allocates a new gl-array. Must be freed by free-gl-array."
+  `(make-gl-array :pointer (foreign-alloc ,@foreign-alloc-args)
+                  :size (or (getf foreign-alloc-args :count) (max (length ,(getf foreign-alloc-args :initial-contents)) 1))
+                  :type type))
+
+#|
 (defstruct (gl-vertex-array (:copier nil) (:include gl-array))
   "Like GL-ARRAY, but with an aditional vertex array binder."
   (binder #'identity :type function))
+|#
 
-(defun gl-vector (type &rest args)
-  (make-gl-array :pointer (foreign-alloc type :initial-contents args)
-                 :size (length args) :type type))
-
-
+#|
 (defun alloc-gl-array (type count)
   (if (get type 'vertex-array-binder)
       (make-gl-vertex-array
@@ -25,7 +30,9 @@
        :size count :type type :binder (get type 'vertex-array-binder))
       (make-gl-array :pointer (foreign-alloc type :count count)
                      :size count :type type)))
+|#
 
+#|
 (declaim (inline make-gl-array-from-pointer))
 (defun make-gl-array-from-pointer (ptr type count)
   "Same as ALLOC-GL-ARRAY but uses a supplied pointer instead of
@@ -35,6 +42,7 @@ allocating new memory."
         (make-gl-vertex-array :pointer ptr :size count
                               :type type :binder binder)
         (make-gl-array :pointer ptr :size count :type type))))
+|#
 
 (defun free-gl-array (array)
   "Frees an array allocated by ALLOC-GL-ARRAY."
@@ -42,7 +50,8 @@ allocating new memory."
 
 (defun make-null-gl-array (type)
   "Returns a GL-ARRAY with a size of 0, a null pointer and of type TYPE."
-  (make-gl-array-from-pointer (null-pointer) type 0))
+  (make-gl-array (null-pointer) 0 type))
+
 
 (declaim (inline gl-aref))
 (defun gl-aref (array index &optional (component nil c-p))
@@ -56,7 +65,9 @@ allocating new memory."
                         (gl-array-type array)
                         component)
     (mem-aref (gl-array-pointer array) (gl-array-type array) index)))
- (declaim (inline (setf gl-aref)))
+
+
+(declaim (inline (setf gl-aref)))
 (defun (setf gl-aref) (value array index &optional (component nil c-p))
   "Sets the place (GL-AREF ARRAY INDEX [COMPONENT]) to VALUE."
   (if c-p
@@ -69,14 +80,24 @@ allocating new memory."
     (setf (mem-aref (gl-array-pointer array) (gl-array-type array) index)
           value)))
 
-;;; Returns a pointer to the OFFSET-th element in ARRAY.  I think this
-;;; is different from mem-aref for simple types.
+
 (declaim (inline gl-array-pointer-offset))
 (defun gl-array-pointer-offset (array offset)
+  "Returns a pointer to the OFFSET-th element in ARRAY."
   (inc-pointer (gl-array-pointer array)
                (* (foreign-type-size (gl-array-type array)) offset)))
 
-;;; Returns the number of bytes in the array.
+
 (declaim (inline gl-array-byte-size))
 (defun gl-array-byte-size (array)
+  "Returns the number of bytes in the array."
   (* (gl-array-size array) (foreign-type-size (gl-array-type array))))
+
+
+(defmacro with-gl-array ((var type &rest gl-array-args) &body body)
+  "Allocates a fresh GL-ARRAY of type TYPE and COUNT elements.
+  The array will be bound to VAR and is freed when execution moves
+  outside WITH-GL-ARRAY."
+  (let ((,var (make-gl-array type ,@gl-array-args)))
+    (declare (dynamic-extent ,var))
+    ,@body))
