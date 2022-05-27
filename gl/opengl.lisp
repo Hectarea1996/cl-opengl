@@ -270,14 +270,14 @@ type. The following parameters are supported:
 
 
 
-
+#|
 (defun bind-gl-vertex-array (array &optional (offset 0))
   "Binds ARRAY starting at the OFFSET-th element."
   (funcall (gl-vertex-array-binder array)
            (gl-array-pointer-offset array offset)))
+|#
 
-
-
+#|
 (declaim (inline map-buffer-to-gl-array))
 (defun map-buffer-to-gl-array (target access type)
   "This is like MAP-BUFFER but returns a GL-ARRAY instead of a plain pointer.
@@ -288,7 +288,9 @@ return value."
    type
    (floor (get-buffer-parameter target :buffer-size :int)
           (foreign-type-size type))))
+|#
 
+#|
 (defmacro with-mapped-buffer ((p target access) &body body)
   "Maps the buffer currently bound to TARGET with ACCESS storing
 the returned pointer in P. The buffer is unmapped when execution
@@ -299,7 +301,9 @@ another buffer is bound within FORMS."
        (unwind-protect
             (progn ,@body)
          (unmap-buffer ,target)))))
+|#
 
+#|
 (defmacro with-gl-mapped-buffer ((a target access type) &body body)
   "This is like WITH-MAPPED-BUFFER, but maps to a GL-ARRAY instead."
   `(let ((,a (map-buffer-to-gl-array ,target ,access ,type)))
@@ -307,6 +311,7 @@ another buffer is bound within FORMS."
      (unwind-protect
           (progn ,@body)
        (unmap-buffer ,target))))
+|#
 
 ;;;
 ;;; 2.10 Rectangles

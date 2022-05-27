@@ -35,7 +35,20 @@
                 #:symbolicate
                 #:with-unique-names
                 #:ensure-list)
+  (:import-from ); Arreglar
+  (:shadowing-import-from #:cl-opengl-bindings
+                          #:char #:char-arb #:intptr #:sizeiptr #:intptr-arb #:sizeiptr-arb
+                          #:handle-arb #:half #:half-arb #:half-nv #:int64 #:uint64 #:clampd
+                          #:double #:clampf #:float #:sizei #:uint #:ushort #:ubyte #:int
+                          #:short #:byte #:void #:bitfield #:boolean #:string #:int64-ext
+                          #:uint64-ext)
   (:export
+   ;; Types
+   #:char #:char-arb #:intptr #:sizeiptr #:intptr-arb #:sizeiptr-arb
+   #:handle-arb #:half #:half-arb #:half-nv #:int64 #:uint64 #:clampd
+   #:double #:clampf #:float #:sizei #:uint #:ushort #:ubyte #:int
+   #:short #:byte #:void #:bitfield #:boolean #:string #:int64-ext
+   #:uint64-ext
    ;; 2.5 GL Errors
    #:get-error
    #:opengl-error

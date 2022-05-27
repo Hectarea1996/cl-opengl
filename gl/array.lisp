@@ -12,9 +12,9 @@
 
 (defmacro alloc-gl-array (type &rest foreign-alloc-args)
   "Allocates a new gl-array. Must be freed by free-gl-array."
-  `(make-gl-array :pointer (foreign-alloc ,@foreign-alloc-args)
-                  :size (or (getf foreign-alloc-args :count) (max (length ,(getf foreign-alloc-args :initial-contents)) 1))
-                  :type type))
+  `(make-gl-array :pointer (foreign-alloc ,type ,@foreign-alloc-args)
+                  :size (or ,(getf foreign-alloc-args :count) (max (length ,(getf foreign-alloc-args :initial-contents)) 1))
+                  :type ,type))
 
 #|
 (defstruct (gl-vertex-array (:copier nil) (:include gl-array))
@@ -50,7 +50,7 @@ allocating new memory."
 
 (defun make-null-gl-array (type)
   "Returns a GL-ARRAY with a size of 0, a null pointer and of type TYPE."
-  (make-gl-array (null-pointer) 0 type))
+  (make-gl-array :pointer (null-pointer) :size 0 :type type))
 
 
 (declaim (inline gl-aref))
@@ -98,6 +98,7 @@ allocating new memory."
   "Allocates a fresh GL-ARRAY of type TYPE and COUNT elements.
   The array will be bound to VAR and is freed when execution moves
   outside WITH-GL-ARRAY."
-  (let ((,var (make-gl-array type ,@gl-array-args)))
-    (declare (dynamic-extent ,var))
-    ,@body))
+  `(let ((,var (alloc-gl-array ,type ,@gl-array-args)))
+     (declare (dynamic-extent ,var))
+     ,@body
+     (free-gl-array ,var)))
